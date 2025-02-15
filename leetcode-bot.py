@@ -118,6 +118,8 @@ async def send_reminder():
             "📈 Đừng để streak bị reset nhé! 💪"
         )
     
+    print(f"[{datetime.now()}] Đã gửi nhắc nhở: {title} - {problem_link}")
+    
     await bot.send_message(chat_id=CHAT_ID, text=message, parse_mode="Markdown")
 
 
@@ -126,7 +128,7 @@ def schedule_reminders():
 
 async def main():
     print("📢 Bot nhắc nhở LeetCode đang chạy!")
-    await send_reminder()
+    # await send_reminder()
     schedule_reminders()
 
     while True:
