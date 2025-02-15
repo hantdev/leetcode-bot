@@ -6,26 +6,40 @@ This is a simple bot that will remind you to do a LeetCode problem every day. It
 
 ## Usage
 
-1. Create a new bot on Telegram using the [BotFather](https://core.telegram.org/bots#6-botfather)
+### 1. How to get a Telegram bot token
 
-**Bot Token** - The token that the BotFather gives you when you create the bot
+- In Telegram, search for the user `@BotFather`.
+- Use the command `\newbot` and choose a name and username for your bot.
+- `@BotFather` will return you the token of the bot created. Remember to keep it safe!
 
 ![alt text](<./img/1.png>)
 
-2. Get your chat ID using Bot `@userinfobot`
+### 2. How to get a Telegram chat ID
 
-**Chat ID** - The ID that the @userinfobot gives you when you start a chat with it
+- Send a `/start` command to the telegram bot created in the previous step
+- Visit `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
+- Look at the API response, `result[0]['message']['chat']['id']` should contains ID of the chat. Remember to copy the `-` prefix if exists.
+
+> Or you can use the `@userinfobot` to get the chat ID.
 
 ![alt text](<./img/2.png>)
 
-3. Clone the repository
+### 3. Test if Bot token and Chat ID is correct or not
+
+Open Terminal, run the following command. You will need to replace `<BOT_TOKEN>` and `<CHAT_ID>` with the one you get in previous steps.
+
+```bash
+curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" -d "chat_id=<CHAT_ID>&text=Hello World"
+```
+
+### 4. Clone the repository
 
 ```bash
 git clone https://github.com/hantdev/leetcode-bot.git
 cd leetcode-bot
 ```
 
-4. Install the requirements
+### 5. Set up the virtual environment and install the dependencies
 
 ```bash
 python3 -m venv venv
@@ -33,13 +47,18 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-5. Create a `.env` file and fill in the required fields
+### 6. Create a `.env` file and fill in the required fields
 
 ```bash
 cp .env.example .env
 ```
 
-6. Run the bot with `tmux`
+```bash
+TELEGRAM_BOT_TOKEN=<YOUR_TELEGRAM_BOT_TOKEN>
+TELEGRAM_CHAT_ID=<YOUR_TELEGRAM_CHAT_ID>
+```
+
+### 7. Run the bot with `tmux` if you want to keep it running in the background even after closing the terminal session (Optional)
 
 Install tmux if you don't have it
 
@@ -54,5 +73,6 @@ source venv/bin/activate
 python leetcode-bot.py
 ```
 
-7. To detach from the tmux session, press `Ctrl + B` and then `D`
-8. To attach to the tmux session, run `tmux attach -t leetcode-bot`
+### 8. To detach from the tmux session, press `Ctrl + B` and then `D`
+
+### 9. To attach to the tmux session, run `tmux attach -t leetcode-bot`
