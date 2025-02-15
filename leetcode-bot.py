@@ -16,12 +16,16 @@ STREAK_FILE = "streak.json"
 bot = Bot(token=TOKEN)
 
 def get_random_problem():
-    url = "https://leetcode.com/api/problems/all/"
+    url = "https://leetcode.com/api/problems/algorithms/"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         problems = data.get("stat_status_pairs", [])
-        filtered_problems = [p for p in problems if p["difficulty"]["level"] in [1, 2]]
+        
+        filtered_problems = [
+            p for p in problems 
+            if not p.get("paid_only", False) and p["difficulty"]["level"] in [1, 2]
+        ]
 
         if filtered_problems:
             problem = random.choice(filtered_problems)
@@ -31,8 +35,8 @@ def get_random_problem():
             difficulty_map = {1: "🟢 Easy", 2: "🟡 Medium"}
             problem_link = f"https://leetcode.com/problems/{slug}/"
 
-            # Lấy tags từ API
-            tags_url = f"https://leetcode.com/graphql"
+            # Lấy tags từ API GraphQL
+            tags_url = "https://leetcode.com/graphql"
             query = {
                 "query": """query getQuestionTags($titleSlug: String!) {
                     question(titleSlug: $titleSlug) {
@@ -108,7 +112,7 @@ async def send_reminder():
             "🔔 **Đã đến giờ làm LeetCode!**\n\n"
             f"🚀 Hôm nay hãy thử giải bài: [{title}]({problem_link})\n"
             f"🔹 Độ khó: {difficulty}\n"
-            f"🏷 Tags: {tags_text}\n\n"
+            f"🏷 Topics: {tags_text}\n\n"
             f"🔥 Streak hiện tại: **{streak} ngày liên tiếp!**\n"
             f"🏆 Best Streak: **{best_streak} ngày!**\n"
             "📈 Đừng để streak bị reset nhé! 💪"
@@ -122,7 +126,7 @@ def schedule_reminders():
 
 async def main():
     print("📢 Bot nhắc nhở LeetCode đang chạy!")
-    # await send_reminder()
+    await send_reminder()
     schedule_reminders()
 
     while True:
