@@ -122,7 +122,7 @@ def schedule_reminders():
 
 async def main():
     print("📢 Bot nhắc nhở LeetCode đang chạy!")
-    await send_reminder()
+    # await send_reminder()
     schedule_reminders()
 
     while True:
