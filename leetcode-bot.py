@@ -124,7 +124,8 @@ async def send_reminder():
 
 
 def schedule_reminders():
-    schedule.every().day.at("08:00").do(lambda: asyncio.run(send_reminder()))
+    schedule.every().day.at("08:00").do(lambda: asyncio.create_task(send_reminder()))
+    schedule.every().day.at("12:00").do(lambda: asyncio.create_task(send_reminder()))
 
 async def main():
     print("📢 Bot nhắc nhở LeetCode đang chạy!")
